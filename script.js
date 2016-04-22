@@ -4,7 +4,6 @@ var onReady = function () {
 	var info_box = function(name, value) {
 //   <!-- <div class="panel panel-primary">...</div> -->
 		status_string = value["status"]
-		console.log(status_string)
 		if (status_string === "ok") {
 			status = "panel-success"
 		} else if (status_string === "warn") {
@@ -14,18 +13,17 @@ var onReady = function () {
 		} else {
 			status = "";
 		}
-		console.log(status)
 
-		// <div class="col-md-4">
 		return `
-			<div class="panel ">
+		<div class="col-md-4">
+			<div class="panel panel-default">
 		    	<div class="panel-body">
 		      		${name}
 	    		</div>
 
 		    	<div class="panel-footer">${value}</div>
+	  		</div>
 	  	</div>`
-	  		// </div>
 	}
 
 	var update_status = function () {
