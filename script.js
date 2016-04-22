@@ -1,22 +1,33 @@
 var onReady = function () {
-	// console.log("ready")
 
 	var status_string_to_classname = function(status_string) {
 		if (status_string === "ok") {
-			return "panel-success"
+			return "panel-success";
 		} else if (status_string === "warn") {
-			return "panel-warn"
+			return "panel-warn";
 		} else if (status_string === "error") {
-			return "panel-danger"
+			return "panel-danger";
 		} else {
 			return "panel-default";
 		}
 	}
 
+	var isObject = function (obj) {
+  		return obj === Object(obj);
+	}
+
+	var make_meat = function(value) {
+		if (isObject(value)) {
+			return JSON.stringify(value)
+		} else {
+			return value
+		}
+	}
+
 	var info_box = function(name, value) {
-//   <!-- <div class="panel panel-primary">...</div> -->
 		status_string = value["status"]
 		status = status_string_to_classname(status_string)
+		meat = make_meat(value)
 
 		return `
 		<div class="col-md-4">
@@ -25,7 +36,7 @@ var onReady = function () {
 			    <h3 class="panel-title">${name}</h3>
 			  </div>
 			  <div class="panel-body">
-			    ${value}
+			    ${meat}
 			  </div>
 			</div>
 		</div>
