@@ -1,14 +1,14 @@
 var onReady = function () {
 
-	var status_string_to_classname = function(status_string) {
+	var status_string_to_classname_suffix = function(status_string) {
 		if (status_string === "ok") {
-			return "panel-success";
+			return "success";
 		} else if (status_string === "warn") {
-			return "panel-warn";
+			return "warn";
 		} else if (status_string === "error") {
-			return "panel-danger";
+			return "danger";
 		} else {
-			return "panel-default";
+			return "default";
 		}
 	}
 
@@ -26,14 +26,27 @@ var onReady = function () {
 
 	var info_box = function(name, value) {
 		status_string = value["status"]
-		status = status_string_to_classname(status_string)
+		status = status_string_to_classname_suffix(status_string)
 		meat = make_meat(value)
+
+		if (status !== "default") {
+			label = `<span class="label label-${status}">${status_string}</span>`
+		} else {
+			label = ""
+		}
+// <div class="panel-title pull-left">
+        //  Works fine for me!
+        //  </div>
+        // <div class="panel-title pull-right">Text on the right</div>
+
 
 		return `
 		<div class="col-md-4">
-			<div class="panel ${status}">
+			<div class="panel panel-${status}">
 			  <div class="panel-heading">
-			    <h3 class="panel-title">${name}</h3>
+			  	<div class="panel-title pull-left">${name}</div>
+			  	<div class="panel-title pull-right">${label}</div>
+			  	<div class="clearfix"></div> 
 			  </div>
 			  <div class="panel-body">
 			    ${meat}
@@ -53,7 +66,7 @@ var onReady = function () {
 				console.log(userInfo);
 
 				serviceName = userInfo["name"] || "?";
-				$(".page-header").html("&nbsp&nbspStatus for "+serviceName+"");
+				$(".page-header").html("&nbsp&nbsp Status for "+serviceName+"");
 
 				$("#main").empty();
 
