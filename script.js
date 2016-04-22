@@ -1,29 +1,35 @@
 var onReady = function () {
-	console.log("ready")
+	// console.log("ready")
+
+	var status_string_to_classname = function(status_string) {
+		if (status_string === "ok") {
+			return "panel-success"
+		} else if (status_string === "warn") {
+			return "panel-warn"
+		} else if (status_string === "error") {
+			return "panel-danger"
+		} else {
+			return "panel-default";
+		}
+	}
 
 	var info_box = function(name, value) {
 //   <!-- <div class="panel panel-primary">...</div> -->
 		status_string = value["status"]
-		if (status_string === "ok") {
-			status = "panel-success"
-		} else if (status_string === "warn") {
-			status = "panel-warn"
-		} else if (status_string === "error") {
-			status = "panel-danger"
-		} else {
-			status = "";
-		}
+		status = status_string_to_classname(status_string)
 
 		return `
 		<div class="col-md-4">
-			<div class="panel panel-default">
-		    	<div class="panel-body">
-		      		${name}
-	    		</div>
-
-		    	<div class="panel-footer">${value}</div>
-	  		</div>
-	  	</div>`
+			<div class="panel ${status}">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">${name}</h3>
+			  </div>
+			  <div class="panel-body">
+			    ${value}
+			  </div>
+			</div>
+		</div>
+		`
 	}
 
 	var update_status = function () {
@@ -36,7 +42,7 @@ var onReady = function () {
 				console.log(userInfo);
 
 				serviceName = userInfo["name"] || "?";
-				$(".heading").html("Status for "+serviceName+"");
+				$(".page-header").html("Status for "+serviceName+"");
 
 				$("#main").empty();
 
