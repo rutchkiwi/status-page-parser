@@ -42,7 +42,7 @@ var onReady = function () {
 				console.log(userInfo);
 
 				serviceName = userInfo["name"] || "?";
-				$(".page-header").html("Status for "+serviceName+"");
+				$(".page-header").html("&nbsp&nbspStatus for "+serviceName+"");
 
 				$("#main").empty();
 
