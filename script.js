@@ -27,14 +27,6 @@ var onReady = function () {
 			label = ""
 		}
 
-		// var make_meat = function(value_map) {
-		// 	if (is_object(value_map)) {
-		// 		return JSON.stringify(value_map)
-		// 	} else {
-		// 		return value_map
-		// 	}
-		// }
-
 		inner_html = function(values){
 			ret = ""
 			jQuery.each(values, function(key, val) {
@@ -42,6 +34,9 @@ var onReady = function () {
 			});
 			return ret;
 		}
+
+		comment = value_map["comment"]; delete value_map["comment"];
+		help_html = `<i>${comment}</i><br/>`;
 
 		return `
 		<div class="col-md-6">
@@ -52,6 +47,7 @@ var onReady = function () {
 			  	<div class="clearfix"></div> 
 			  </div>
 			  <div class="panel-body">
+			  	${help_html}
 			    ${inner_html(value_map)}
 			  </div>
 			</div>
