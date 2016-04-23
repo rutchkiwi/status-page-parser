@@ -1,4 +1,11 @@
+div.help_text {
+  color: gray;
+  margin-bottom: 5px;
+}​
+
 div {
   /*word-break: break-all;*/
   word-wrap: break-word;
+  color: red;
 }​
+

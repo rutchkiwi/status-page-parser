@@ -1,4 +1,8 @@
 var onReady = function () {
+	$(function () {
+  		$('[data-toggle="tooltip"]').tooltip()
+	});
+
 	var status_string_to_classname_suffix = function(status_string) {
 		if (status_string === "ok") {
 			return "success";
@@ -35,21 +39,19 @@ var onReady = function () {
 		}
 
 		comment = value_map["comment"]; delete value_map["comment"];
-		help_html = `<a data-toggle="tooltip" data-placement="right" title="${comment}">
-                <i class='glyphicon glyphicon-question-sign'></i>
-            </a>`
+		help_html = `<div class="help_text"><i>${comment}</i><br/></div>`;
 
 		return `
 		<div class="col-md-6">
 			<div class="panel panel-${status}">
 			  <div class="panel-heading">
 			  	<div class="panel-title pull-left">
-			  		${name} ${help_html}
-		  		</div>
+			  		${name}</div>
 			  	<div class="panel-title pull-right">${label}</div>
 			  	<div class="clearfix"></div> 
 			  </div>
 			  <div class="panel-body">
+			  	${help_html}
 			    ${inner_html(value_map)}
 			  </div>
 			</div>
@@ -89,9 +91,6 @@ var onReady = function () {
 	var update_healthchecks = function(healthchecks){
 		jQuery.each(healthchecks, function(key, val) {
 			$("#main").append(health_check_box(key, val))
-		});
-		$(function () { //activate tooltips
-  			$('[data-toggle="tooltip"]').tooltip()
 		});
 	};
 
