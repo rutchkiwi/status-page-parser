@@ -3,8 +3,8 @@ var onReady = function () {
 	var status_string_to_classname_suffix = function(status_string) {
 		if (status_string === "ok") {
 			return "success";
-		} else if (status_string === "warn") {
-			return "warn";
+		} else if (status_string === "warning") {
+			return "warning";
 		} else if (status_string === "error") {
 			return "danger";
 		} else {
@@ -34,14 +34,9 @@ var onReady = function () {
 		} else {
 			label = ""
 		}
-// <div class="panel-title pull-left">
-        //  Works fine for me!
-        //  </div>
-        // <div class="panel-title pull-right">Text on the right</div>
-
 
 		return `
-		<div class="col-md-4">
+		<div class="col-md-6">
 			<div class="panel panel-${status}">
 			  <div class="panel-heading">
 			  	<div class="panel-title pull-left">${name}</div>
@@ -56,9 +51,33 @@ var onReady = function () {
 		`
 	}
 
+	var update_info = function(info){
+		info_element = function(key, val) {
+			return `
+			<a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">${key}</h4>
+            <p class="list-group-item-text">${val}</p>
+          </a>
+          `;
+		}
+
+		$("#info-list").empty();
+		jQuery.each(info, function(key, val) {
+			console.log(key)
+			$("#info-list").append(info_element(key, val));
+		});
+	};
+
+	var update_healthchecks = function(healthchecks){
+		jQuery.each(healthchecks, function(key, val) {
+			$("#main").append(info_box(key, val))
+		});
+	};
+
+
 	var update_status = function () {
 		var xhr = new XMLHttpRequest();
-		xhr.open('GET', '/status');
+		xhr.open('GET', '/status.json');
 		// xhr.setRequestHeader('Content-Type', 'application/json');
 		xhr.onload = function() {
 			if (xhr.status === 200) {
@@ -66,14 +85,13 @@ var onReady = function () {
 				console.log(userInfo);
 
 				serviceName = userInfo["name"] || "?";
-				$(".page-header").html("&nbsp&nbsp Status for "+serviceName+"");
+				$(".page-header").html("Status for "+serviceName+"");
 
 				$("#main").empty();
 
-				jQuery.each(userInfo, function(key, val) {
-					$("#main").append(info_box(key, val))
-					// $("#" + i).append(document.createTextNode(" - " + val));
-				});
+				
+				update_healthchecks(userInfo["healthchecks"])
+				update_info(userInfo["info"])
 			}
 		};
 		xhr.send();

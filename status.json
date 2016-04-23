@@ -1,0 +1,32 @@
+{
+  "name": "supplier-service",
+  "info": {
+    "revision": "6135708ecf1c578cfd80b8969d442869ebac01b0\n",
+    "user": "deploy",
+    "deployed": "22/04/16 12:51:54",
+    "environment": "development",
+    "consumer": {
+      "queue": "rabbit.switch.production.supplier-service",
+      "exchange": "instructions.production",
+      "auto-delete": false,
+      "durable": true
+    },
+    "switches-consumer-rabbitmq-connection": "energy-back-office-vpc-rabbit-mq.uswitchinternal.com:5672"
+  },
+  "healthchecks": {
+    "switches-missing": {
+      "status": "warning",
+      "comment": "Stuff that should've been batched, but haven't.",
+      "missing": ["13e34433f3d","12a942f3e882"],
+      "count": 2
+    },
+     "database-connection": {
+      "status": "ok",
+      "comment": "Can the app connect to it's database?"
+    },
+    "rabbitmq-connection": {
+      "status": "error",
+      "comment": "Can a test message be put on the rabbitmq test queue?"
+    }
+  }
+}

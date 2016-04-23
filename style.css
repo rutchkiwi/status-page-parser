@@ -1,4 +1,4 @@
-/*.page-header {
- 	text-align: center 
- }
-*/
+div {
+  /*word-break: break-all;*/
+  word-wrap: break-word;
+}​
