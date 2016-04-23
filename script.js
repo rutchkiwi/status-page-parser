@@ -14,25 +14,33 @@ var onReady = function () {
 
 	var is_object = function(obj) {
   		return obj === Object(obj);
-	}
+	}	
 
-	var make_meat = function(value) {
-		if (is_object(value)) {
-			return JSON.stringify(value)
-		} else {
-			return value
-		}
-	}
-
-	var health_check_box = function(name, value) {
-		status_string = value["status"]
+	var health_check_box = function(name, value_map) {
+		status_string = value_map["status"]
+		delete value_map["status"]
 		status = status_string_to_classname_suffix(status_string)
-		meat = make_meat(value)
 
 		if (status !== "default") {
 			label = `<span class="label label-${status}">${status_string}</span>`
 		} else {
 			label = ""
+		}
+
+		// var make_meat = function(value_map) {
+		// 	if (is_object(value_map)) {
+		// 		return JSON.stringify(value_map)
+		// 	} else {
+		// 		return value_map
+		// 	}
+		// }
+
+		inner_html = function(values){
+			ret = ""
+			jQuery.each(values, function(key, val) {
+				ret = ret + " " +key + ": " + val + "<br>"
+			});
+			return ret;
 		}
 
 		return `
@@ -44,7 +52,7 @@ var onReady = function () {
 			  	<div class="clearfix"></div> 
 			  </div>
 			  <div class="panel-body">
-			    ${meat}
+			    ${inner_html(value_map)}
 			  </div>
 			</div>
 		</div>
