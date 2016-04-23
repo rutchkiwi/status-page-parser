@@ -12,19 +12,19 @@ var onReady = function () {
 		}
 	}
 
-	var isObject = function (obj) {
+	var is_object = function(obj) {
   		return obj === Object(obj);
 	}
 
 	var make_meat = function(value) {
-		if (isObject(value)) {
+		if (is_object(value)) {
 			return JSON.stringify(value)
 		} else {
 			return value
 		}
 	}
 
-	var info_box = function(name, value) {
+	var health_check_box = function(name, value) {
 		status_string = value["status"]
 		status = status_string_to_classname_suffix(status_string)
 		meat = make_meat(value)
@@ -52,37 +52,48 @@ var onReady = function () {
 	}
 
 	var update_info = function(info){
+
+		value_html = function(val){
+			if (is_object(val)){
+				ret = ""
+				jQuery.each(val, function (key, val){
+					ret = ret + " " +key + ": " + val + "<br>"
+				});
+				return ret;
+			} else {
+				return val;
+			}
+		};
+
 		info_element = function(key, val) {
 			return `
-			<a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">${key}</h4>
-            <p class="list-group-item-text">${val}</p>
-          </a>
+				<a href="#" class="list-group-item">
+            		<h4 class="list-group-item-heading">${key}</h4>
+            		<p class="list-group-item-text">${value_html(val)}</p>
+          		</a>
           `;
-		}
+		};
 
 		$("#info-list").empty();
 		jQuery.each(info, function(key, val) {
-			console.log(key)
 			$("#info-list").append(info_element(key, val));
 		});
 	};
 
 	var update_healthchecks = function(healthchecks){
 		jQuery.each(healthchecks, function(key, val) {
-			$("#main").append(info_box(key, val))
+			$("#main").append(health_check_box(key, val))
 		});
 	};
 
-
 	var update_status = function () {
+		console.log("updating")
 		var xhr = new XMLHttpRequest();
 		xhr.open('GET', '/status.json');
 		// xhr.setRequestHeader('Content-Type', 'application/json');
 		xhr.onload = function() {
 			if (xhr.status === 200) {
 				var userInfo = JSON.parse(xhr.responseText);
-				console.log(userInfo);
 
 				serviceName = userInfo["name"] || "?";
 				$(".page-header").html("Status for "+serviceName+"");
