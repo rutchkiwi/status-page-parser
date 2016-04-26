@@ -1,8 +1,5 @@
 var onReady = function () {
-	$(function () {
-  		$('[data-toggle="tooltip"]').tooltip()
-	});
-
+	
 	var status_string_to_classname_suffix = function(status_string) {
 		if (status_string === "ok") {
 			return "success";
@@ -94,6 +91,42 @@ var onReady = function () {
 		});
 	};
 
+
+	var new_head = `
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+	  <title>waiting for js</title>
+
+	  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+	 <!-- already loaded <script type="text/javascript" src="script.js"></script> -->
+	 <link rel="stylesheet" type="text/css" href="style.css">
+	`;
+
+	var initial_body = `  <div class="container-fluid">
+    <h1 class="page-header">Status</h1>
+    <div class="row">
+      <div class="col-md-4">
+        <h2>Info</h2>
+        <div class="list-group" id="info-list">
+
+
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <h2>&nbsp Health checks</h2>
+        <div id="main">
+
+          waiting for js phase 2 to load...
+        </div>
+
+      </div>
+    </div>`;
+
 	var update_status = function () {
 		console.log("updating")
 		var xhr = new XMLHttpRequest();
@@ -105,6 +138,7 @@ var onReady = function () {
 
 				serviceName = userInfo["name"] || "?";
 				$(".page-header").html("Status for "+serviceName+"");
+				$("title").replaceWith("<title>Status for "+serviceName+"</title>");
 
 				$("#main").empty();
 
@@ -115,9 +149,13 @@ var onReady = function () {
 		};
 		xhr.send();
 	}
-	// setInterval(function(){update_status();}, 200000000);
-	update_status();
-}
 
+	// hack to load js and css from this script
+	$('head').empty().append(new_head);
+	$('body').empty().append(initial_body);
+
+	update_status();
+	// setInterval(function(){update_status();}, 200000000);
+}
 
 $('document').ready(onReady);
